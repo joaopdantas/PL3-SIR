@@ -1,20 +1,25 @@
-const express = require('express');  // Use 'const' for proper declaration
+const express = require('express');
+const cors = require('cors');  // Import the cors middleware
 const app = express();
 
-app.use(express.static('public'));  // Serve static files from 'public' folder
+// Enable CORS for your specific frontend domain
+app.use(cors({
+    origin: 'https://pl3-sir.onrender.com',  // Replace with your domain
+    methods: 'GET,POST',  // You can specify allowed HTTP methods
+    allowedHeaders: 'Content-Type'
+}));
 
-// Route for '/hello'
+app.use(express.static('public'));
+
 app.get('/hello', function (req, res) {
     return res.send('Hello');
 });
 
-// Route for '/euro'
 app.get('/euro', function (req, res) {
-    res.setHeader('Content-Type', 'application/json');  // Set header to JSON type
-    return res.json(bet());  // Respond with JSON data from bet()
+    res.setHeader('Content-Type', 'application/json');
+    return res.json(bet());
 });
 
-// Function to generate unique numbers
 function generate(n, min, max) {
     let set = new Set();
     while (set.size < n) {
@@ -24,19 +29,15 @@ function generate(n, min, max) {
     return Array.from(set).sort((a, b) => a - b);
 }
 
-// Function to generate a bet
 function bet() {
     const numbers = generate(5, 1, 50);
     const stars = generate(2, 1, 12);
-
-    // Return a new bet object
     return {
         "numbers": numbers,
         "stars": stars
     };
 }
 
-// Start the server
 app.listen(3000, () => {
     console.log("Server is running on http://localhost:3000");
 });
