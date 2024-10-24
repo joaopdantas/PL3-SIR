@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', (e) => {
     });
 
     function getNewBet() {
-        fetch('https://pl3-sir.onrender.com')
+        fetch('https://pl3-sir.onrender.com/euro')
             .then((response) => response.json())
             .then((bet) => {
                 // Remove the incorrect console.log(response);
