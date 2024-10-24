@@ -3,53 +3,46 @@ document.addEventListener('DOMContentLoaded', (e) => {
     button = document.getElementById("genBtn");
 
     button.addEventListener('click', (e) => {
-        // genNewBet();
-        // genJSONBet();
-
         getNewBet();
     });
-
 
     function getNewBet() {
         fetch('http://localhost:3000/euro')
             .then((response) => response.json())
-            .then (bet => {
-                //debugger;
+            .then((bet) => {
+                // Remove the incorrect console.log(response);
+                // You are already working with 'bet', which is the JSON data
                 console.log(bet.numbers);
 
+                const theOLNumbers = document.getElementById('olMain');
+                theOLNumbers.innerHTML = "";
 
-    theOLNumbers = document.getElementById('olMain');
-    theOLNumbers.innerHTML = "";
+                // Loop through the bet.numbers array and create list items
+                bet.numbers.forEach(number => {
+                    const newLi = document.createElement("li");
+                    newLi.innerHTML = number;
+                    theOLNumbers.appendChild(newLi);
+                });
 
-    bet.numbers.forEach(number => {
-        newLi = document.createElement("li");
-        newLi.innerHTML = number;
-        theOLNumbers.appendChild(newLi);
-    });
+                const theOLStars = document.getElementById('olStars');
+                theOLStars.innerHTML = "";
 
-    
+                // Loop through the bet.stars array and create list items
+                bet.stars.forEach(star => {
+                    const newLi = document.createElement("li");
+                    newLi.innerHTML = star;
+                    theOLStars.appendChild(newLi);
+                });
 
-    theOLStars = document.getElementById('olStars');
-    theOLStars.innerHTML = "";
-
-    bet.stars.forEach(star => {
-        newLi = document.createElement("li");
-        newLi.innerHTML = star;
-        theOLStars.appendChild(newLi);
-    });
-
-                console.log(response);
-    })
-            .catch((error) => console.error(error))
+                // If you need to log the full bet object, log 'bet', not 'response'
+                console.log(bet);
+            })
+            .catch((error) => {
+                console.error('Failed to fetch:', error); // Catch and log any fetch errors
+            });
     }
-
-    /*
-    button.addEventListener('click', function (e) {
-        console.log("same event, another handle");
-    });
-     button.addEventListener('click', addtext);
-    */
 });
+
 
 
 function genRandomNumbers(n, min, max) {
